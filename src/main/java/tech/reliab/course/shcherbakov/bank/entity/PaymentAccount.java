@@ -1,5 +1,10 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class PaymentAccount {
     private int id;
     private User user;
@@ -8,26 +13,6 @@ public class PaymentAccount {
 
     public PaymentAccount(User user, Bank bank) {
         this.user = user;
-        this.bank = bank;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Bank getBank() {
-        return bank;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setBank(Bank bank) {
         this.bank = bank;
     }
 

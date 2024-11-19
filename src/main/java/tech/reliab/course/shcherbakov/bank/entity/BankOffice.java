@@ -1,5 +1,10 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class BankOffice {
     private int id;
     private String name;
@@ -21,30 +26,6 @@ public class BankOffice {
         this.worksCashIssuance = worksCashIssuance;
         this.worksDepositCash = worksDepositCash;
         this.rentalCost = rentalCost;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setMoneyOffice(double moneyOffice) {
-        this.moneyOffice = moneyOffice;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override

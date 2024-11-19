@@ -40,7 +40,7 @@ public class AtmServiceImpl implements AtmService {
         BankAtm bankAtm = new BankAtm(name, address, bank, location, employee, worksCashIssuance, worksDepositCash, serviceCost);
         bankAtm.setId(atmCounts++);
         bankAtm.setStatus(bank.getTotalMoney() == 0 ? BankAtm.Status.NotMoney : BankAtm.Status.Working);
-        bankAtm.setAtmMoney(bank.getTotalMoney());
+        bankAtm.setMoneyAtm(bank.getTotalMoney());
         return bankAtm;
     }
 

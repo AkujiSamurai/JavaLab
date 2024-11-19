@@ -1,7 +1,12 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class Employee {
     private int id;
     private String fullName;
@@ -22,26 +27,6 @@ public class Employee {
         this.bankOffice = bankOffice;
         this.canIssueCredit = canIssueCredit;
         this.salary = salary;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public Bank getBank() {
-        return bank;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     @Override

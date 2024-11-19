@@ -1,5 +1,10 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Bank {
     private int id;
     private String name;
@@ -13,78 +18,6 @@ public class Bank {
 
     public Bank(String name) {
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getOfficeCount() {
-        return officeCount;
-    }
-
-    public int getAtmCount() {
-        return atmCount;
-    }
-
-    public int getEmployeeCount() {
-        return employeeCount;
-    }
-
-    public int getClientCount() {
-        return clientCount;
-    }
-
-    public int getRatingBank() {
-        return ratingBank;
-    }
-
-    public double getTotalMoney() {
-        return totalMoney;
-    }
-
-    public double getInterestRate() {
-        return interestRate;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setOfficeCount(int officeCount) {
-        this.officeCount = officeCount;
-    }
-
-    public void setAtmCount(int atmCount) {
-        this.atmCount = atmCount;
-    }
-
-    public void setEmployeeCount(int employeeCount) {
-        this.employeeCount = employeeCount;
-    }
-
-    public void setClientCount(int clientCount) {
-        this.clientCount = clientCount;
-    }
-
-    public void setRatingBank(int ratingBank) {
-        this.ratingBank = ratingBank;
-    }
-
-    public void setTotalMoney(double totalMoney) {
-        this.totalMoney = totalMoney;
-    }
-
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
     }
 
     @Override
