@@ -1,90 +1,85 @@
 package tech.reliab.course.shcherbakov.bank.service.impl;
 
-import tech.reliab.course.shcherbakov.bank.entity.Bank;
-import tech.reliab.course.shcherbakov.bank.entity.BankOffice;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import tech.reliab.course.shcherbakov.bank.entity.Employee;
+import tech.reliab.course.shcherbakov.bank.model.EmployeeRequest;
+import tech.reliab.course.shcherbakov.bank.repository.EmployeeRepository;
+import tech.reliab.course.shcherbakov.bank.service.BankOfficeService;
 import tech.reliab.course.shcherbakov.bank.service.BankService;
 import tech.reliab.course.shcherbakov.bank.service.EmployeeService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-    private static int employeesCount = 1;
+    private final EmployeeRepository employeeRepository;
     private final BankService bankService;
-    private List<Employee> employees = new ArrayList<>();
-
-    public EmployeeServiceImpl(BankService bankService) {
-        this.bankService = bankService;
-    }
-
+    private final BankOfficeService bankOfficeService;
 
     /**
      * Создание нового сотрудника банка
-     * @param fullName ФИО сотрудника
-     * @param dateOfBirth Дата рождения
-     * @param position Должность
-     * @param bank Банк, в котором он работает
-     * @param removeWork Работает ли удаленно
-     * @param bankOffice Офис, в котором работает сотрудник
-     * @param canIssueCredit Может ли выдавать кредиты
-     * @param salary Зарпалата
-     * @return Созданный сотрудник
+     *
+     * @param employeeRequest информация о сотруднике
+     * @return Созданный сотрудник банка.
      */
-    public Employee createEmployee(String fullName, LocalDate dateOfBirth, String position, Bank bank, boolean removeWork, BankOffice bankOffice, boolean canIssueCredit, double salary) {
-        Employee employee = new Employee(fullName, dateOfBirth, position, bank, removeWork, bankOffice, canIssueCredit, salary);
-        employee.setId(employeesCount++);
-        employees.add(employee);
-        bankService.addEmployee(bank);
-        return employee;
+    public Employee createEmployee(EmployeeRequest employeeRequest) {
+        Employee employee = new Employee(employeeRequest.getFullName(), employeeRequest.getBirthDate(),
+                employeeRequest.getPosition(), bankService.getBankById(employeeRequest.getBankId()),
+                employeeRequest.isRemoteWork(), bankOfficeService.getBankOfficeById(employeeRequest.getBankOfficeId()),
+                employeeRequest.isCanIssueLoans(), employeeRequest.getSalary());
+        return employeeRepository.save(employee);
     }
 
     /**
      * Получение сотрудника по его идентификатору
+     *
      * @param id Идентификатор
      * @return Найденный сотрудник, иначе - пустой Optional
      */
-    public Optional<Employee> getEmployeeById(int id) {
-        return employees.stream().filter(employee -> employee.getId() == id).findFirst();
+    public Employee getEmployeeDtoById(int id) {
+        return getEmployeeById(id);
     }
 
     /**
      * Получение всех сотрудников
+     *
      * @return Список всех сотрудников
      */
     public List<Employee> getAllEmployees() {
-        return new ArrayList<>(employees);
+        return employeeRepository.findAll();
     }
 
     /**
      * Обновление информации о сотруднике
-     * @param id Идентификатор
+     *
+     * @param id   Идентификатор
      * @param name Новое имя сотрудника
      */
-    public void updateEmployee(int id, String name) {
-        Employee employee = getEmployee(id);
+    public Employee updateEmployee(int id, String name) {
+        Employee employee = getEmployeeById(id);
         employee.setFullName(name);
+        return employeeRepository.save(employee);
     }
 
     /**
      * Удаление сотрудника по идентификатору
+     *
      * @param id Идентификатор
      */
     public void deleteEmployee(int id) {
-        Employee employee = getEmployee(id);
-        employees.remove(employee);
-        bankService.removeEmployee(employee.getBank());
+        employeeRepository.deleteById(id);
     }
 
     /**
      * Получение сотрудника, если он существует
+     *
      * @param id Идентификатор
      * @return Найденный сотрудник, иначе - NoSuchElementException
      */
-    public Employee getEmployee(int id) {
-        return getEmployeeById(id).orElseThrow(() -> new NoSuchElementException("Employee not found"));
+    public Employee getEmployeeById(int id) {
+        return employeeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Employee was not found"));
     }
 }

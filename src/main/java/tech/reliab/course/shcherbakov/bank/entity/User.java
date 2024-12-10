@@ -1,43 +1,74 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
+    @Column(nullable = false)
     private String fullName;
-    private LocalDate dateOfBirth;
+
+    @Column(nullable = false)
+    private LocalDate birthDate;
+
+    @Column(nullable = false)
     private String job;
+
+    @Column(nullable = false)
     private double monthlyIncome;
-    private List<Bank> banks = new ArrayList<>();
-    private List<CreditAccount> creditAccounts = new ArrayList<>();
-    private List<PaymentAccount> paymentAccounts = new ArrayList<>();
+
+    @Column(nullable = false)
     private int creditRating;
 
-    public User(String fullName, LocalDate dateOfBirth, String job) {
+    @ManyToMany
+    @JoinTable(
+            name = "user_banks",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "bank_id")
+    )
+    private List<Bank> banks;
+
+    @OneToMany(mappedBy = "user")
+    private List<CreditAccount> creditAccounts;
+
+    @OneToMany(mappedBy = "user")
+    private List<PaymentAccount> paymentAccounts;
+
+    public User(String fullName, LocalDate birthDate, String job) {
         this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
+        this.birthDate = birthDate;
         this.job = job;
     }
 
     @Override
     public String toString() {
-        return "User [ " +
+        return "User{" +
                 "id=" + id +
-                ", fullName = '" + fullName + '\'' +
-                ", dateOfBirth = " + dateOfBirth +
-                ", job = '" + job + '\'' +
-                ", monthlyIncome = " + monthlyIncome +
-                ", creditRating = " + creditRating +
-                ", banks = " + banks.stream().map(Bank::getName).toList() +
-                ", creditAccounts = " + creditAccounts.size() +
-                ", paymentAccounts = " + paymentAccounts.size() +
-                " ]";
+                ", fullName='" + fullName + '\'' +
+                ", birthDate=" + birthDate +
+                ", job='" + job + '\'' +
+                ", monthlyIncome=" + monthlyIncome +
+                ", creditRating=" + creditRating +
+                ", banks=" + banks.stream().map(Bank::getName).toList() +
+                ", creditAccounts=" + creditAccounts.size() +
+                ", paymentAccounts=" + paymentAccounts.size() +
+                '}';
     }
 }

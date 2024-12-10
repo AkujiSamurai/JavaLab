@@ -1,47 +1,70 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import tech.reliab.course.shcherbakov.bank.enums.BankOfficeStatus;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.util.List;
+
+@ToString
+@Entity
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "bank_offices")
 public class BankOffice {
-    private int id;
-    private String name;
-    private String address;
-    private boolean status;
-    private boolean placeAtm;
-    private int atmImOffice = 0;
-    private boolean getCredit;
-    private boolean worksCashIssuance;
-    private boolean worksDepositCash;
-    private double moneyOffice;
-    private double rentalCost;
 
-    public BankOffice(String name, String address, boolean placeAtm, boolean getCredit, boolean worksCashIssuance, boolean worksDepositCash, double rentalCost) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BankOfficeStatus status;
+
+    @Column(nullable = false)
+    private boolean canPlaceAtm;
+
+    @Column(nullable = false)
+    private boolean canIssueLoan;
+
+    @Column(nullable = false)
+    private boolean cashWithdrawal;
+
+    @Column(nullable = false)
+    private boolean cashDeposit;
+
+    @Column(nullable = false)
+    private double officeMoney;
+
+    @Column(nullable = false)
+    private double rentCost;
+
+    @OneToMany(mappedBy = "location")
+    private List<BankAtm> atms;
+
+    @ManyToOne
+    private Bank bank;
+
+    @OneToMany(mappedBy = "bankOffice")
+    private List<Employee> employees;
+
+    public BankOffice(String name, String address, boolean canPlaceAtm, boolean canIssueLoan, boolean cashWithdrawal, boolean cashDeposit, double rentCost, Bank bank) {
         this.name = name;
         this.address = address;
-        this.placeAtm = placeAtm;
-        this.getCredit = getCredit;
-        this.worksCashIssuance = worksCashIssuance;
-        this.worksDepositCash = worksDepositCash;
-        this.rentalCost = rentalCost;
-    }
-
-    @Override
-    public String toString() {
-        return "BankOffice[" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                ", address = '" + address + '\'' +
-                ", status = " + status +
-                ", placeAtm = " + placeAtm +
-                ", atmImOffice = " + atmImOffice +
-                ", getCredit = " + getCredit +
-                ", worksCashIssuance = " + worksCashIssuance +
-                ", worksDepositCash = " + worksDepositCash +
-                ", moneyOffice = " + moneyOffice +
-                ", rentalCost = " + rentalCost +
-                " ]";
+        this.canPlaceAtm = canPlaceAtm;
+        this.canIssueLoan = canIssueLoan;
+        this.cashWithdrawal = cashWithdrawal;
+        this.cashDeposit = cashDeposit;
+        this.rentCost = rentCost;
+        this.bank = bank;
     }
 }

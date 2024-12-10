@@ -1,46 +1,74 @@
 package tech.reliab.course.shcherbakov.bank.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@Entity
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "employees")
 public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
+    @Column(nullable = false)
     private String fullName;
-    private LocalDate dateOfBirth;
+
+    @Column(nullable = false)
+    private LocalDate birthDate;
+
+    @Column(nullable = false)
     private String position;
+
+    @ManyToOne
     private Bank bank;
-    private boolean removeWork;
+
+    @Column(nullable = false)
+    private boolean remoteWork;
+
+    @ManyToOne
     private BankOffice bankOffice;
-    private boolean canIssueCredit;
+
+    @Column(nullable = false)
+    private boolean canIssueLoans;
+
+    @Column(nullable = false)
     private double salary;
 
-    public Employee(String fullName, LocalDate dateOfBirth, String position, Bank bank, boolean removeWork, BankOffice bankOffice, boolean canIssueCredit, double salary) {
+    @OneToMany(mappedBy = "employee")
+    private List<BankAtm> bankAtm;
+
+    public Employee(String fullName, LocalDate birthDate, String position, Bank bank, boolean remoteWork, BankOffice bankOffice, boolean canIssueLoans, double salary) {
         this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
+        this.birthDate = birthDate;
         this.position = position;
         this.bank = bank;
-        this.removeWork = removeWork;
+        this.remoteWork = remoteWork;
         this.bankOffice = bankOffice;
-        this.canIssueCredit = canIssueCredit;
+        this.canIssueLoans = canIssueLoans;
         this.salary = salary;
     }
 
     @Override
     public String toString() {
-        return "Employee [ " +
-                "id = " + id +
-                ", fullName = '" + fullName + '\'' +
-                ", dateOfBirth = " + dateOfBirth +
-                ", position = '" + position + '\'' +
-                ", bank = " + bank.getName() +
-                ", removeWork = " + removeWork +
-                ", bankOffice = " + (bankOffice != null ? bankOffice.getName() : "None") +
-                ", canIssueCredit = " + canIssueCredit +
-                ", salary = " + salary +
-                " ]";
+        return "Employee{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", birthDate=" + birthDate +
+                ", position='" + position + '\'' +
+                ", bank=" + bank.getName() +
+                ", remoteWork=" + remoteWork +
+                ", bankOffice=" + (bankOffice != null ? bankOffice.getName() : "None") +
+                ", canIssueLoans=" + canIssueLoans +
+                ", salary=" + salary +
+                '}';
     }
 }

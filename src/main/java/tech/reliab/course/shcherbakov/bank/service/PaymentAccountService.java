@@ -1,20 +1,21 @@
 package tech.reliab.course.shcherbakov.bank.service;
 
-import tech.reliab.course.shcherbakov.bank.entity.Bank;
 import tech.reliab.course.shcherbakov.bank.entity.PaymentAccount;
-import tech.reliab.course.shcherbakov.bank.entity.User;
+import tech.reliab.course.shcherbakov.bank.model.PaymentAccountRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PaymentAccountService {
-    PaymentAccount createPaymentAccount(User user, Bank bank);
 
-    Optional<PaymentAccount> getPaymentAccountById(int id);
+    PaymentAccount createPaymentAccount(PaymentAccountRequest paymentAccountRequest);
+
+    PaymentAccount getPaymentAccountById(int id);
+
+    PaymentAccount getPaymentAccountDtoById(int id);
 
     List<PaymentAccount> getAllPaymentAccounts();
 
-    void updatePaymentAccount(int id, Bank bank);
+    PaymentAccount updatePaymentAccount(int id, int bankId);
 
     void deletePaymentAccount(int id);
 }
